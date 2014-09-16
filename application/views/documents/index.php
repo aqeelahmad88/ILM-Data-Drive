@@ -7,7 +7,7 @@
 <script type="text/javascript" language="javascript" src="<?php echo base_url(); ?>assets/datatables/resources/demo.js"></script>
 <script>
 	$(document).ready(function() {
-		$("#dashboard-table-2").dataTable({
+		$("#dashboard-table-teacher").dataTable({
 			"aaSorting" : [[0, 'desc']]	
 		});
 	});
@@ -103,7 +103,7 @@
     <div class="table-header"> Result </div>
     <div> 
       <!--<table id="sample-table-2" class="table table-striped table-bordered table-hover">-->
-      <table id="dashboard-table-2" class="display" cellspacing="0" width="100%">
+      <table id="dashboard-table-teacher" class="display" cellspacing="0" width="100%">
         <thead>
           <tr>
             <th class="center">ID</th>

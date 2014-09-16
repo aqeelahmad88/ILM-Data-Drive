@@ -12,7 +12,7 @@ class Documents extends CI_Controller {
 	{
 		$data["title"] = "Documents";
 		$data["user"] = $this->session->userdata("isLoggedIn");
-		$data["semesters"] = $this->common_model->query("SELECT * FROM semesters WHERE semesters.user_id = ".$data["user"]->id."");
+		$data["semesters"] = $this->common_model->query("SELECT *, REPLACE(semesters.semester, 'Semester ', '') AS orderby FROM semesters WHERE semesters.user_id = ".$data["user"]->id." ORDER BY CAST(`orderby` AS SIGNED) ASC");
 		$data["variable"] = "documents";
 		$this->load->view("documents/index", $data);
 	}
@@ -46,7 +46,7 @@ class Documents extends CI_Controller {
 		$data["title"] = "Add New";
 		$data["user"] = $this->session->userdata("isLoggedIn");
 		$data["variable"] = "documents";
-		$data["semesters"] = $this->common_model->query("SELECT * FROM semesters WHERE semesters.user_id = ".$data["user"]->id." ORDER BY semesters.semester");
+		$data["semesters"] = $this->common_model->query("SELECT *, REPLACE(semesters.semester, 'Semester ', '') AS orderby FROM semesters WHERE semesters.user_id = ".$data["user"]->id." ORDER BY CAST(`orderby` AS SIGNED) ASC");
 		$data["subjects"] = $this->common_model->query("SELECT * FROM subjects WHERE subjects.user_id = ".$data["user"]->id." ORDER BY subjects.subjects");
 		$this->load->view("documents/add_new", $data);
 	}
@@ -76,10 +76,6 @@ class Documents extends CI_Controller {
 			}else{
 				$data['privacy'] = 0;
 			}
-			$doc_paths = $_FILES["doc_paths"];
-			$data['filesize'] = $doc_paths["size"];
-			$data['type'] = $doc_paths["type"];
-			$data['name'] = $doc_paths["name"];
 			if(strtolower($user->type_name)=="student"){
 				$path = create_folder($data['user_id'], $data['semester_id'], $data['subject_id']);
 			}else{
@@ -87,25 +83,25 @@ class Documents extends CI_Controller {
 			}
 			$docpath = str_replace('./uploads/', '', $path);
 			$data['doc_paths'] = $docpath;
-	
-	
-			$name = $_FILES['doc_paths']['name'];
-			if(strlen($name)){
-				$fname=time().'_'.basename($_FILES['doc_paths']['name']);
-				$fname = str_replace(" ","_",$fname);
-				$fname = str_replace("%","_",$fname);
-				$name_ext = end(explode(".", basename($_FILES['doc_paths']['name'])));
-				$name = str_replace('.'.$name_ext,'',basename($_FILES['doc_paths']['name']));
-				$uploaddir = $path.'/';
-				$uploadfile = $uploaddir.$fname;
-				if (move_uploaded_file($_FILES['doc_paths']['tmp_name'], $uploadfile)){
-					$data["uploaded_filename"] = $fname;
-					$this->common_model->insert("documents", $data);
-					$this->session->set_flashdata("success","New Record Successfully Entered");
-					redirect(site_url("documents"));
-				}else{
-					$this->session->set_flashdata("error","Problem occured please try again.");
-					redirect(site_url("documents"));
+			for($i=0; $i<count($_FILES['doc_paths']['name']); $i++){
+				$name = $_FILES['doc_paths']['name'][$i];
+				if(strlen($name)){
+					$fname=time().'_'.basename($_FILES['doc_paths']['name'][$i]);
+					$fname = str_replace(" ","_",$fname);
+					$fname = str_replace("%","_",$fname);
+					$name_ext = end(explode(".", basename($_FILES['doc_paths']['name'][$i])));
+					$name = str_replace('.'.$name_ext,'',basename($_FILES['doc_paths']['name'][$i]));
+					$uploaddir = $path.'/';
+					$uploadfile = $uploaddir.$fname;
+					if (move_uploaded_file($_FILES['doc_paths']['tmp_name'][$i], $uploadfile)){
+						$doc_paths = $_FILES["doc_paths"];
+						$data['filesize'] = $doc_paths["size"][$i];
+						$data['type'] = $doc_paths["type"][$i];
+						$data['name'] = $doc_paths["name"][$i];
+						$data["uploaded_filename"] = $fname;
+						$this->common_model->insert("documents", $data);
+					}else{
+					}
 				}
 			}
 		}

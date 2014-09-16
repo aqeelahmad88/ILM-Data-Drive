@@ -39,7 +39,8 @@
     <div class="form-group ace-file-input-">
       <label for="filename" class="col-sm-2 control-label no-padding-right"> Select Document: </label>
       <div class="col-sm-9">
-        <input type="file" id="id-input-file-2" class="col-xs-10 col-sm-3" style="width: 240px;" name="doc_paths" />
+      <span style="font-size:10px;">You can select multiple files here.</span>
+        <input type="file" id="id-input-file-2" class="col-xs-10 col-sm-3" style="width: 240px;" name="doc_paths[]" multiple="multiple" />
         <span class="label label-warning"> <i class="ace-icon fa fa-exclamation-triangle bigger-120"></i> Max file size allow 30MB </span><img src="<?php echo base_url(); ?>assets/img/loading.gif" id="loader-2" style="margin-left:5px; display:none;" /> </div>
     </div>
     <div class="form-group">
@@ -82,12 +83,43 @@ $(document).ready(function(e) {
 		$("#loader").show();
 		var semester_id = $(this).val();
         $.post("<?php echo site_url("documents/get_subjects"); ?>", {semester_id:semester_id}).done(function(result){
+			if(result==""){
+				$(".form-actions").hide();
+				alert("Please add subjects first...");
+			}else{
+				$(".form-actions").show();	
+			}
 			$("#get_subjects").html(result);
 			$("#loader").hide();
 		});
     });
-	
-	$('#id-input-file-2').bind('change', function() {
+	var total = 0;
+	$('#id-input-file-2').bind('change', function(e) {
+		for(i=0; i<this.files.length; i++){
+			total += this.files[i].size;
+		}
+		$("#loader-2").show();
+		sizeinbytes = total;
+		var fSExt = new Array('Bytes', 'KB', 'MB', 'GB');
+		fSize = sizeinbytes; i=0;while(fSize>900){fSize/=1024;i++;}
+		var size = (Math.round(fSize*100)/100)+' '+fSExt[i];
+		if(sizeinbytes>31457280){
+			$(".ace-file-input- .label").removeClass("label-warning");	
+			$(".ace-file-input- .label").addClass("label-danger");
+			$(".ace-file-input- .label").html('<i class="ace-icon fa fa-exclamation-triangle bigger-120"></i>  Your file size limit exceed. Your file size is: '+size);
+			$("#add_new_document").attr("type", "button");
+		}else{
+			$(".ace-file-input- .label").removeClass("label-warning");	
+			$(".ace-file-input- .label").removeClass("label-danger");	
+			$(".ace-file-input- .label").addClass("label-success");
+			$(".ace-file-input- .label").html('<i class="ace-icon fa fa-exclamation-triangle bigger-120"></i>  Your files are valid for our database. Your files size is: '+size);
+			$("#add_new_document").attr("type", "submit");
+		}
+		$("#loader-2").hide();
+		/*$(this).each(data.files, function (index, file) {
+			total += file.size;
+		});		
+		alert(total);
 		$("#loader-2").show();
 		var sizeinbytes = this.files[0].size;
 		var filename = this.files[0].name;
@@ -106,7 +138,7 @@ $(document).ready(function(e) {
 			$(".ace-file-input- .label").html('<i class="ace-icon fa fa-exclamation-triangle bigger-120"></i>  Your file is valid for our database. Your file "'+filename+'" size is: '+size);
 			$("#add_new_document").attr("type", "submit");
 		}
-		$("#loader-2").hide();
+		$("#loader-2").hide();*/
 	});
 });
 </script> 

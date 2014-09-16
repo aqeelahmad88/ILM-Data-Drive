@@ -32,16 +32,16 @@
                 <?php } ?>
               </select></td>
           </tr>
-          <tr>
+          <tr id="get_subjects_tr">
             <th>Subjects: </th>
-            <td><select class="chzn-select" data-placeholder="Choose a subject..." id="subjects" name="subjects" style="width: 274px;">
+            <td id="get_subjects"><select class="chzn-select" data-placeholder="Choose a subject..." id="subjects" name="subjects" style="width: 274px;">
                 <option value=""></option>
                 <?php if($subjects->num_rows()>0){ ?>
                 <?php foreach($subjects->result() as $row){ ?>
                 <option value="<?php echo $row->subjects; ?>" <?php if($this->input->post("subjects")==$row->subjects){echo 'selected="selected"';} ?>><?php echo $row->subjects; ?></option>
                 <?php } ?>
                 <?php } ?>
-              </select></td>
+              </select><img src="<?php echo base_url(); ?>assets/img/loading.gif" id="loader" style="display:none;" /></td>
           </tr>
           <tr>
             <th>Keyword: </th>
@@ -50,6 +50,7 @@
         </table>
         <div class="form-actions">
           <button type="submit" class="btn btn-info"> <i class="icon-ok bigger-110"></i> Submit </button>
+          <button type="reset" onclick="window.location='<?php site_url("search"); ?>'" class="btn"> <i class="ace-icon fa fa-undo bigger-110"></i> Reset </button>
         </div>
         </form>
       </div>
@@ -123,3 +124,18 @@ table.dataTable thead .sorting {
 </style>
 
 <?php include(APPPATH."views/inc/footer.php"); ?>
+<script>
+$(document).ready(function(e) {
+    $("#departments").change(function(e) {
+		$("#loader").show();
+		var department = $(this).val();
+        $.post("<?php echo site_url("search/get_subjects"); ?>", {department:department}).done(function(result){
+			if(result==""){
+				$("#get_subjects_tr").fadeOut(400);
+			}
+			$("#get_subjects").html(result);
+			$("#loader").hide();
+		});
+    });
+});
+</script>

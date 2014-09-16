@@ -57,6 +57,14 @@
       </select>
     </div>
   </div>
+  <?php $fieldname = "email"; ?>
+  <?php $value = $users->$fieldname; ?>
+  <div class="form-group">
+    <label for="<?php echo $fieldname; ?>" class="col-sm-3 control-label no-padding-right"> <?php echo strtoupper(string_filter($fieldname)); ?> </label>
+    <div class="col-sm-9">
+      <input type="text" class="col-xs-10 col-sm-5" id="<?php echo $fieldname; ?>" name="<?php echo $fieldname; ?>" value="<?php echo $value; ?>">
+    </div>
+  </div>
   <?php $fieldname = "cnic"; ?>
   <?php $value = $users->$fieldname; ?>
   <div class="form-group">
@@ -119,24 +127,24 @@
   <div class="form-group">
     <label for="<?php echo $fieldname; ?>" class="col-sm-3 control-label no-padding-right"> <?php echo string_filter($fieldname); ?> </label>
     <div class="col-sm-9">
-      <input type="text" class="col-xs-10 col-sm-5 valid_link" id="<?php echo $fieldname; ?>" name="<?php echo $fieldname; ?>" value="<?php echo $value; ?>"><span id="span_<?php echo $fieldname; ?>" style="margin-top:3px; color:#F00; display:none;">&nbsp;</span>
-    </div>
+      <input type="text" class="col-xs-10 col-sm-5 valid_link" id="<?php echo $fieldname; ?>" name="<?php echo $fieldname; ?>" value="<?php echo $value; ?>">
+      <span id="span_<?php echo $fieldname; ?>" style="margin-top:3px; color:#F00; display:none;">&nbsp;</span> </div>
   </div>
   <?php $fieldname = "twitter"; ?>
   <?php $value = $users->$fieldname; ?>
   <div class="form-group">
     <label for="<?php echo $fieldname; ?>" class="col-sm-3 control-label no-padding-right"> <?php echo string_filter($fieldname); ?> </label>
     <div class="col-sm-9">
-      <input type="text" class="col-xs-10 col-sm-5 valid_link" id="<?php echo $fieldname; ?>" name="<?php echo $fieldname; ?>" value="<?php echo $value; ?>"><span id="span_<?php echo $fieldname; ?>" style="margin-top:3px; color:#F00; display:none;">&nbsp;</span>
-    </div>
+      <input type="text" class="col-xs-10 col-sm-5 valid_link" id="<?php echo $fieldname; ?>" name="<?php echo $fieldname; ?>" value="<?php echo $value; ?>">
+      <span id="span_<?php echo $fieldname; ?>" style="margin-top:3px; color:#F00; display:none;">&nbsp;</span> </div>
   </div>
   <?php $fieldname = "linkedin"; ?>
   <?php $value = $users->$fieldname; ?>
   <div class="form-group">
     <label for="<?php echo $fieldname; ?>" class="col-sm-3 control-label no-padding-right"> <?php echo string_filter($fieldname); ?> </label>
     <div class="col-sm-9">
-      <input type="text" class="col-xs-10 col-sm-5 valid_link" id="<?php echo $fieldname; ?>" name="<?php echo $fieldname; ?>" value="<?php echo $value; ?>"><span id="span_<?php echo $fieldname; ?>" style="margin-top:3px; color:#F00; display:none;">&nbsp;</span>
-    </div>
+      <input type="text" class="col-xs-10 col-sm-5 valid_link" id="<?php echo $fieldname; ?>" name="<?php echo $fieldname; ?>" value="<?php echo $value; ?>">
+      <span id="span_<?php echo $fieldname; ?>" style="margin-top:3px; color:#F00; display:none;">&nbsp;</span> </div>
   </div>
   <?php $fieldname = "avatar_img"; ?>
   <?php $value = $users->id; ?>

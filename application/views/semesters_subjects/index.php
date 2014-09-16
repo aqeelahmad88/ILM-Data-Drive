@@ -26,7 +26,7 @@
       <?php } ?>
     </ol>
     <?php }else{ ?>
-    <?php $semesters = $this->common_model->query("SELECT * FROM semesters WHERE semesters.user_id = ".$user->id." ORDER BY semesters.semester ASC"); ?>
+    <?php $semesters = $this->common_model->query("SELECT *, REPLACE(semesters.semester, 'Semester ', '') AS orderby FROM semesters WHERE semesters.user_id = ".$user->id." ORDER BY CAST(`orderby` AS SIGNED) ASC"); ?>
     <?php if($semesters->num_rows()>0){ ?>
     <?php foreach($semesters->result() as $row){ ?>
     <div class="col-sm-6">

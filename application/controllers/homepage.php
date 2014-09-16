@@ -19,7 +19,8 @@ class Homepage extends CI_Controller {
 		$this->form_validation->set_rules('user_email', 'Username', 'required');
 		$this->form_validation->set_rules('user_password', 'Password', 'trim|required|xss_clean|callback_checkUsername');
 		if($this->form_validation->run() == FALSE){
-			$this->load->view('homepage');
+			$reload["departments"] = $this->common_model->query("SELECT * FROM departments ORDER BY departments.name ASC");
+			$this->load->view('homepage', $reload);
 		}else{
 			$this->session_establish($username);
 			redirect(site_url("dashboard"));

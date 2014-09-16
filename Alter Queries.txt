@@ -1,0 +1,8 @@
+ALTER TABLE `subjects`
+	ADD COLUMN `department` INT(11) NULL DEFAULT NULL AFTER `id`;
+
+ALTER TABLE `subjects`
+	CHANGE COLUMN `department` `department` VARCHAR(50) NULL DEFAULT NULL AFTER `id`;
+
+ALTER TABLE `subjects`
+	CHANGE COLUMN `department` `department` VARCHAR(255) NULL DEFAULT NULL AFTER `id`;
